@@ -126,6 +126,26 @@
 .status.off i{background:#9AA59D}
 .replay{background:none;border:0;padding:0 .3rem;min-height:44px;font:500 .92rem var(--text);color:var(--ink-2);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 
+.sld .beam{fill:none;stroke:#FFE7A3;stroke-width:5;stroke-linecap:round;stroke-dasharray:10 110;stroke-dashoffset:10;opacity:0;filter:drop-shadow(0 0 4px #F2B01E) drop-shadow(0 0 8px rgba(242,176,30,.8))}
+.sld.on-grid .b-grid, .sld.on-solar .b-pv, .sld.on-solar .b-batt, .sld:is(.on-grid,.on-solar) .b-home{opacity:1;animation:beam 1.8s cubic-bezier(.45,0,.55,1) infinite}
+.sld.on-solar .b-batt{animation-delay:.5s}
+.sld .b-home{animation-delay:.9s!important}
+@keyframes beam{from{stroke-dashoffset:10}to{stroke-dashoffset:-100}}
+
+/* ---------- photo strip: slow drift, pauses on hover, focus or the button ---------- */
+.strip{padding:0 0 clamp(3rem, 2rem + 3vw, 5rem);overflow:hidden}
+.strip-track{display:flex;gap:12px;width:max-content;animation:drift 60s linear infinite}
+.strip:hover .strip-track,.strip:focus-within .strip-track,.strip.paused .strip-track{animation-play-state:paused}
+.strip figure{margin:0;flex:none;width:clamp(200px, 22vw, 300px);border-radius:16px;overflow:hidden;position:relative}
+.strip img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.strip figcaption{position:absolute;inset:auto 0 0 0;padding:1.6rem .8rem .7rem;color:#fff;font-size:.85rem;font-weight:500;background:linear-gradient(transparent, rgba(19,34,30,.85))}
+@keyframes drift{to{transform:translateX(calc(-50% - 6px))}}
+.strip-bar{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1rem}
+.strip-bar p{color:var(--muted);font-size:.95rem}
+.pause{display:inline-flex;align-items:center;gap:.5rem;min-height:44px;padding:0 1rem;border:1.5px solid var(--rule);border-radius:10px;background:var(--white);font:600 .92rem var(--text);color:var(--ink);cursor:pointer}
+.pause:hover{border-color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.sld .beam{display:none}.strip{overflow-x:auto}.strip-track{animation:none}.strip [aria-hidden="true"]{display:none}.pause{display:none}}
+
 /* ---------- services ---------- */
 .services{background:var(--white);border-block:1px solid var(--rule)}
 .svc-grid{display:grid;gap:3rem}
@@ -181,7 +201,10 @@
 .small-quotes p{font-size:1.1rem}
 .small-quotes cite{margin-top:.5rem}
 .score{display:flex;align-items:center;gap:.8rem;margin-top:1.4rem;color:var(--ink-2)}
-.score b{font:700 2.6rem/1 var(--display);color:var(--ink)}
+.score b{font:700 2.6rem/1 var(--display);color:var(--ink);font-variant-numeric:tabular-nums;min-width:2.6ch}
+.score .stars svg{transition:opacity .3s, transform .45s var(--out)}
+.js .score:not(.lit) .stars svg{opacity:.18;transform:scale(.6)}
+.score .stars svg:nth-child(2){transition-delay:.12s}.score .stars svg:nth-child(3){transition-delay:.24s}.score .stars svg:nth-child(4){transition-delay:.36s}.score .stars svg:nth-child(5){transition-delay:.48s}
 
 /* ---------- visit ---------- */
 .visit-grid{display:grid;gap:2rem;margin-top:3rem}
@@ -284,6 +307,10 @@
           <path class="live l-batt" d="M120 392 V300 H218"/>
           <path class="live l-grid" d="M478 98 V140 H380 M380 140 H372 V250 H342"/>
           <path class="live l-home" d="M280 330 V368 H470 V392"/>
+          <path class="beam b-pv" pathLength="100" d="M120 196 V250 H218"/>
+          <path class="beam b-batt" pathLength="100" d="M218 300 H120 V392"/>
+          <path class="beam b-grid" pathLength="100" d="M478 98 V140 H372 V250 H342"/>
+          <path class="beam b-home" pathLength="100" d="M280 330 V368 H470 V392"/>
           <!-- sun -->
           <circle class="sunc" cx="120" cy="54" r="24"/>
           <g class="ray"><line x1="120" y1="12" x2="120" y2="20"/><line x1="78" y1="54" x2="86" y2="54"/><line x1="154" y1="54" x2="162" y2="54"/><line x1="90" y1="24" x2="96" y2="30"/><line x1="150" y1="24" x2="144" y2="30"/></g>
@@ -315,6 +342,28 @@
       </figure>
       </div>
     </div>
+  </section>
+
+  <section class="strip" aria-label="Photos of recent Amo-p installs">
+    <div class="strip-track">
+      <figure><img src="img/roof-wide-640.webp" width="640" height="800" alt="Panel array on a commercial roof" loading="lazy"><figcaption>Panel array on a commercial roof</figcaption></figure>
+      <figure><img src="img/ladder-640.webp" width="640" height="800" alt="Mounting panels on a home" loading="lazy"><figcaption>Mounting panels on a home</figcaption></figure>
+      <figure><img src="img/inverters-640.webp" width="640" height="800" alt="Inverter wall with batteries" loading="lazy"><figcaption>Inverter wall with batteries</figcaption></figure>
+      <figure><img src="img/bungalow-640.webp" width="640" height="800" alt="Panels ready for a new home" loading="lazy"><figcaption>Panels ready for a new home</figcaption></figure>
+      <figure><img src="img/frame-640.webp" width="640" height="800" alt="Ground frame install" loading="lazy"><figcaption>Ground frame install</figcaption></figure>
+      <figure><img src="img/roof-close-640.webp" width="640" height="800" alt="Panels fixed along a roof edge" loading="lazy"><figcaption>Panels fixed along a roof edge</figcaption></figure>
+      <figure><img src="img/wall-640.webp" width="640" height="800" alt="Neat wiring, every breaker labelled" loading="lazy"><figcaption>Neat wiring, every breaker labelled</figcaption></figure>
+      <figure><img src="img/cctv-640.webp" width="640" height="800" alt="CCTV camera ready for mounting" loading="lazy"><figcaption>CCTV camera ready for mounting</figcaption></figure>
+      <figure aria-hidden="true"><img src="img/roof-wide-640.webp" width="640" height="800" alt="" loading="lazy"><figcaption>Panel array on a commercial roof</figcaption></figure>
+      <figure aria-hidden="true"><img src="img/ladder-640.webp" width="640" height="800" alt="" loading="lazy"><figcaption>Mounting panels on a home</figcaption></figure>
+      <figure aria-hidden="true"><img src="img/inverters-640.webp" width="640" height="800" alt="" loading="lazy"><figcaption>Inverter wall with batteries</figcaption></figure>
+      <figure aria-hidden="true"><img src="img/bungalow-640.webp" width="640" height="800" alt="" loading="lazy"><figcaption>Panels ready for a new home</figcaption></figure>
+      <figure aria-hidden="true"><img src="img/frame-640.webp" width="640" height="800" alt="" loading="lazy"><figcaption>Ground frame install</figcaption></figure>
+      <figure aria-hidden="true"><img src="img/roof-close-640.webp" width="640" height="800" alt="" loading="lazy"><figcaption>Panels fixed along a roof edge</figcaption></figure>
+      <figure aria-hidden="true"><img src="img/wall-640.webp" width="640" height="800" alt="" loading="lazy"><figcaption>Neat wiring, every breaker labelled</figcaption></figure>
+      <figure aria-hidden="true"><img src="img/cctv-640.webp" width="640" height="800" alt="" loading="lazy"><figcaption>CCTV camera ready for mounting</figcaption></figure>
+    </div>
+    <div class="wrap strip-bar"><p>Real jobs from the Amo-p team</p><button class="pause" type="button" id="pause" aria-pressed="false">Pause photos</button></div>
   </section>
 
   <section class="services" id="services" aria-labelledby="svc-title">
@@ -389,7 +438,7 @@
   <section class="reviews" id="reviews" aria-labelledby="rev-title">
     <div class="wrap">
       <h2 id="rev-title" class="rv">What customers say</h2>
-      <div class="score rv"><b>5.0</b><span><span class="stars" aria-hidden="true"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></span><br>from 24 reviews on Google</span></div>
+      <div class="score rv" id="score"><b id="score-n">5.0</b><span><span class="stars" aria-hidden="true"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></span><br>from 24 reviews on Google</span></div>
       <div class="rev-grid" style="margin-top:3rem">
         <blockquote class="big-quote rv">
           <p>“The team arrived on time, worked efficiently, and completed the job professionally. They also took time to show me how to monitor the system. Since installation, the power supply has been stable and reliable.”</p>
@@ -468,6 +517,28 @@
     at(3500, finalState);
   }
   replay.addEventListener('click', run);
+
+  // photo strip pause
+  const strip = document.querySelector('.strip'), pause = document.getElementById('pause');
+  pause.addEventListener('click', () => {
+    const on = strip.classList.toggle('paused');
+    pause.setAttribute('aria-pressed', on); pause.textContent = on ? 'Play photos' : 'Pause photos';
+  });
+
+  // review score counts up and the stars light one by one
+  const score = document.getElementById('score'), scoreN = document.getElementById('score-n');
+  const countUp = () => {
+    score.classList.add('lit');
+    if (reduce) return;
+    const t0 = performance.now();
+    const step = t => { const k = Math.min((t - t0) / 1300, 1), e = 1 - Math.pow(1 - k, 4); scoreN.textContent = (5 * e).toFixed(1); if (k < 1) requestAnimationFrame(step); };
+    scoreN.textContent = '0.0'; requestAnimationFrame(step);
+    setTimeout(() => scoreN.textContent = '5.0', 1400); // final value even if frames pause
+  };
+  if ('IntersectionObserver' in window && !reduce) {
+    const so = new IntersectionObserver(([e]) => { if (e.isIntersecting) { countUp(); so.disconnect(); } }, { threshold: .6 });
+    so.observe(score);
+  } else countUp();
 
   // before/after slider
   const cmp = document.getElementById('cmp');
